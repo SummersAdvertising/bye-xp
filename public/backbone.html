@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Backbone test</title>
+		
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script src="http://documentcloud.github.com/underscore/underscore-min.js"></script>
+		<script src="/jquery.tmpl.js"></script>
+		<script src="/backbone.js"></script>
+	</head>
+	<body>
+	
+
+
+<script type="text/javascript">
+
+Backbone.emulateHTTP = true;
+Backbone.emulateJSON = true;
+
+var Record = Backbone.Model.extend({
+	initialize: function() {
+	},	
+	urlRoot: "/records/",
+	defaults: {
+		score: 0,
+		answers: [],
+		questions: [],
+		time: 0,
+		name: '',
+		email: '',
+		phone: ''
+	},
+	dump: function () {
+		console.log('score: ' + this.get('score') + ', answers: ' + this.get('answers').toString() + ' questions:' + this.get('questions').toString());
+	},
+	gained: function() {
+		this.set('score', this.get('score') +1);
+	},
+	answered: function( answer ) {
+		var answers = this.get('answers');
+		answers.push( answer );
+		this.set('answers', answers);
+	},
+	finalize: function(time) {
+		
+		this.set('time', time);
+		
+		this.dump();
+		
+		this.save();
+		
+	}
+});
+
+ var data = {
+ 	questions: [
+ 		{ 	content: "Windows XP已經進入產品生命週期末端，即將正式終止支援，請問代表了什麼含意？", 
+ 			answers: [{ content: '市面上不再販售Windows XP'}, { content: '無法再透過微軟得到相關技術支援'}, { content: '不再釋出任何系統更新'}, { content: '以上皆是', currect: true}],
+ 			actor: { name: "John" },
+ 			group: 'risk'
+ 		},
+ 		{ 	content: "Windows XP正式終止支援日期是哪一天？" ,
+	 		answers: [{ content: '2013年12月25日'}, { content: '2014年1月1日'}, { content: '2014年4月8日', currect: true}, { content: '2020年4月8日'}],
+ 			actor: { name: "Ada" },
+ 			group: 'risk'
+ 		},
+ 		{ 	content: "終止支援後，如果繼續使用Windows XP將會面臨什麼風險？",
+	 		answers: [{ content: '軟體不相容'}, { content: '週邊裝置、硬體不支援'}, { content: '不再有相關系統更新，資安漏洞大'}, { content: '以上皆是', currect: true}],
+ 			actor: { name: "Bob" },
+ 			group: 'risk'
+ 		},
+ 		{ 	content: "升級最新Windows 7/8 系統，可以如何打造一部最佳個人化的專屬電腦？",
+	 		answers: [{ content: '提供各種佈景主題、個人化設定'}, { content: '桌面小工具，好用又方便'}, { content: '聰明更新，不必再煩惱驅動程式'}, { content: '以上皆是', currect: true}],
+ 			actor: { name: "Cathy" },
+ 			group: 'advance'
+ 		},
+ 		{ 	content: "升級Windows 7/8，可以擁有哪一種更強大的內建功能？",
+	 		answers: [{ content: '剪取工具'}, { content: '問題步驟收錄程式'}, { content: '回復、備份建立系統映像'}, { content: '以上皆是', currect: true}],
+ 			actor: { name: "Cathy" },
+ 			group: 'advance'
+ 		},
+ 		{ 	content: "升級Windows 7/8，可以享受哪一種更高效益的行動力？",
+	 		answers: [{ content: '多種裝置（平板、變形筆電）一次滿足'}, { content: '輕薄短小，輕裝上路'}, { content: '續航力佳，不再是3分鐘熱度'}, { content: '以上皆是', currect: true}],
+ 			actor: { name: "Cathy" },
+ 			group: 'advance'
+ 		},
+ 		{ 	content: "升級Windows 7/8，可以創造哪一種更驚豔的生產力？",
+	 		answers: [{ content: '8秒就開機，風馳電掣'}, { content: '電腦、平板都能使用原有桌面應用程式'}, { content: '穩定、相容性高'}, { content: '以上皆是', currect: true}],
+ 			actor: { name: "Cathy" },
+ 			group: 'advance'
+ 		},
+ 		{ 	content: "計劃升級Windows 7/8，應協助公司該從哪一步驟開始？",
+	 		answers: [{ content: '企業內部軟、硬體資產盤點', currect: true}, { content: '選擇適合授權、系統版本'}, { content: '規劃部署策略'}, { content: '使用微軟免費部署工具'}],
+ 			actor: { name: "Cathy" },
+ 			group: 'upgrade'
+ 		},
+ 		{ 	content: "升級部署前，有什麼好工具可以幫助你？",
+	 		answers: [{ content: 'Microsoft Assessment and Planning Toolkit (MAP)資產盤點工具'}, { content: 'Application Compatibility Toolkit (ACT)相容性測試工具'}, { content: 'User State Migration Tool (USMT)使用者狀態移轉工具'}, { content: 'Microsoft Deployment Toolkit (MDT)大量部署工具'}, { content: 'Windows AIK / Windows ADK 自動化部署套件'}, { content: '以上皆是', currect: true}],
+ 			actor: { name: "Cathy" },
+ 			group: 'upgrade'
+ 		},
+ 		{ 	content: "請依序排出部署流程順序：<br><br>A.	安裝數台參考電腦 Windows 7/8<br>B.	將通過相容性測試的企業內部應用程式，安裝於參考電腦<br>C.	擷取參考電腦上的 Windows7/8系統映像檔<br>D.	決定部署方式<br>E.	調整自動化部署程度<br>F.	使用網路、USB隨身碟、光碟媒體部署	",
+	 		answers: [{ content: 'A, B, C, D, E, F', currect: true}, { content: 'A, C, F, E, B, D'}, { content: 'B, F, C, A, E, D'}, { content: 'F, E, D, C, B, A'}],
+ 			actor: { name: "Cathy" },
+ 			group: 'upgrade'
+ 		},
+ 		{ 	content: "部署Windows 7/8時，必備哪一種工具？",
+	 		answers: [{ content: 'Windows PE'}, { content: 'Sysprep.exe'}, { content: 'ImageX.exe'}, { content: 'MDT/WDS'}, { content: '以上皆是', currect: true}],
+ 			actor: { name: "Cathy" },
+ 			group: 'upgrade'
+ 		},
+ 		
+ 		{ 	content: "關於Windows 8.1 「快速」這項特色，下列哪一個描述不符合？",
+	 		answers: [{ content: '超快速開關機及開啟傳統應用程式'}, { content: '情境功能表，快速尋找所需功能'}, { content: '開始按鈕回來了，選擇你所熟悉操作方式'}, { content: '沒有觸控就不好用', currect: true}],
+ 			actor: { name: "Cathy" },
+ 			group: 'feature'
+ 		},
+ 		{ 	content: "關於Windows 8.1 「行動力」這項特色，下列哪一個描述不符合？",
+	 		answers: [{ content: '多樣化的行動裝置，搭配第四代Intel CPU續航力更強、穩定性更好'}, { content: 'Enterprise Side-loading應用程式企業側載'}, { content: '可攜式的工作環境-Windows To Go'}, { content: '只有桌上型電腦、筆電適合搭載Windows 8.1', currect: true}],
+ 			actor: { name: "Cathy" },
+ 			group: 'feature'
+ 		},
+ 		{ 	content: "關於Windows 8.1 「安全性」這項特色，下列哪一個描述不符合？",
+	 		answers: [{ content: '內建Windows Defender防毒軟體'}, { content: 'Bitlocker資安防護滴水不漏'}, { content: 'SmartScreen自動隔絕惡意網站'}, { content: 'Do Not Track保護IE瀏覽紀錄不被追蹤'}, { content: '從電源開啟的那一刻隨時會遭受惡意程式攻擊', currect: true}],
+ 			actor: { name: "Cathy" },
+ 			group: 'feature'
+ 		},
+ 		{ 	content: "關於Windows 8.1 「前後端整合」這項特色，下列哪一個描述不符合？",
+	 		answers: [{ content: 'Start Screen Control統一化企業內使用者界面，維持一致性，IT控管更方便'}, { content: 'Assigned Access指定存取，使用者只能存取單一應用程式，輕鬆管理末端裝置'}, { content: 'Workplace join加入工作群組，實現BYOD的幫手，讓無法加入網域裝置存取公司內部資源'}, { content: 'Windows 8.1是套全新作業系統必須購買才能升級', currect: true}],
+ 			actor: { name: "Cathy" },
+ 			group: 'feature'
+ 		}
+ 	],
+ 	actors: [
+ 		{ name: "John" },
+ 		{ name: "Ada" },
+ 		{ name: "Bob" },
+ 		{ name: "Cathy" } 		
+ 	]
+	 	
+ };
+ 
+$(document).ready(function() {
+ 
+	var Question = Backbone.Model.extend({
+		initialize: function(data) {
+			this.answers = new Answers(data['answers']);
+			this.answers.parent = this;
+		},
+		answers: {},
+		defaults: {
+			answered: 'undefined'
+		}
+		
+	});
+	
+	var Questions = Backbone.Collection.extend({
+		model: Question,
+		actors: {},
+		
+		initialize: function() {							
+		}
+	});
+	
+	var QuestionView = Backbone.View.extend({
+		el: '#question-container',
+		current: 0,
+		initialize: function() {
+		},
+		next: function() {
+			
+			if ( this.current >= questions.length-1 ) {
+
+				record.finalize($('#timer').html());
+				
+				clearInterval(timer)
+
+				return;
+			}
+			
+			this.current ++;
+			this.render();
+			
+		},
+		render: function() {
+						
+			var question = questions.at( this.current );
+			
+			$('#question-content').html( question.get('content') );
+			
+			answersView.render( question.answers );
+		}
+		
+	});
+	
+	var Answer = Backbone.Model.extend({
+		initialize: function() {
+		},
+		defaults: {
+			content: 'undefined',
+			currect: false
+		},
+		stringify: function() {
+			return JSON.stringify(this.toJSON());
+		}
+	});
+	
+	var Answers = Backbone.Collection.extend({
+		model: Answer,
+		initialize: function() {
+			
+		},
+		setup: function(raw) {
+			for ( var i in raw ) {
+				var answer = new Answer( raw[i] );
+				this.add(answer);
+			}		
+		},
+		stringify: function() {
+			
+			var string = '[';
+			
+			for ( var i in this.models ) {
+				string += this.models[i].stringify();
+				
+				if ( i < this.models.length-1 ) {
+					string += ',';
+				}
+			}
+			
+			string += ']';
+			
+			return string;
+		},
+		
+	});
+	
+	var AnswersView = Backbone.View.extend({
+		initialize: function(data) {
+		},
+		num: [ 'A', 'B', 'C', 'D', 'E' ],
+		el: '#answers-container',
+		template: $('#answer-template'),
+		events: {
+		},
+		render: function( answers ) {
+			
+			var self = this;
+			this.answers = answers;
+			
+			var sequence = [];			
+			for(var j =0; j < answers.models.length; j++) {
+				sequence.push(j);
+			}			
+			sequence = _(sequence).shuffle();
+			
+			this.$el.children().remove();
+			
+			for( var i in answers.models) {
+				var answer = answers.models[ sequence[i] ];
+				
+				var fillin = answer.toJSON();
+				fillin.num = this.num[i];
+				fillin.id = answer.cid;
+				
+				var answerBlock = this.template.tmpl(fillin);
+				answer.view = answerBlock;
+				
+				this.$el.append(answerBlock);
+				
+				answerBlock.click(function() {
+					
+					var answer = self.answers.getByCid($(this).data('id'));
+					
+					$(this).parent().children().unbind('click');
+				
+					record.answered( answer.get('content') );
+					
+					if ( answer.get('currect') == true ) {
+					
+						actorsView.survive( self.answers.parent.get( 'actor' ).name );
+						$(this).html('Nice one.');
+						
+						record.gained();
+						
+					} else {
+					
+						var currectAnswer = self.answers.where({currect: true})[0];
+						
+						self.$el.find('[data-id=' + currectAnswer.cid + ']').html("I'm currect.");
+						$(this).html('Nooooo you are wrong.');
+						
+						actorsView.dead( self.answers.parent.get( 'actor' ).name );
+					}
+					
+					setTimeout(function() { questionView.next(); }, 2000);
+					
+				});
+				
+			}
+			
+		}
+	});
+	
+	var Actor = Backbone.Model.extend({
+		initalize: function() {
+			
+		},
+		defaults: {
+			name: 'undefined',
+			image: 'undefined'
+		}
+	});
+	
+	var Actors = Backbone.Collection.extend({
+		model: Actor,
+		initialize: function() {
+			
+		}
+	});
+	
+	var ActorsView = Backbone.View.extend({
+		el: '#actors-container',
+		template: $('#actor-template'),
+		initialize: function() {
+			
+		},
+		survive: function(name) {
+			
+			this.$el.find('#' + name).html('Keeped!').addClass('survived').siblings().not('.dead').html('Huuuuu Raaae!');
+			
+		},
+		dead: function(name) {
+			this.$el.find('#' + name).html('( X o X )').addClass('dead').siblings().not('.dead').html('on NOOOO!');
+			
+		},
+		render: function(actors) {
+			
+			this.$el.children().remove();
+			
+			for ( var i in actors.models ) {
+				
+				var actor = actors.models[i];
+				
+				var actorBlock = this.template.tmpl( actor.toJSON() );
+				
+				this.$el.append(actorBlock);
+				
+			}
+			
+		}
+	});
+
+	questions = new Questions(data.questions);
+	actors = new Actors(data.actors);
+		
+	questionView = new QuestionView();
+	answersView = new AnswersView();
+	actorsView = new ActorsView();
+	
+	questionView.render();
+	
+	actorsView.render(actors);
+
+	var time = 0;
+	
+	timer = setInterval(function() { time ++; $('#timer').html(time) }, 1000)
+});
+
+var questions;
+var actors;
+
+var record = new Record();
+
+var timer;
+
+var questionView;
+var answersView;
+var actorsView;
+
+
+
+</script>
+
+<script id="answer-template" type="text/x-jquery-tmpl">
+	<p class="answer" data-id="${id}">${num}. ${content}</p>
+</script>
+
+<script id="actor-template" type="text/x-jquery-tmpl">
+	<div class="actor" id="${name}">I'm ${name}, I'm alive.</div>
+</script>
+
+<style>
+	#templates {
+		display: none;
+	}
+
+	#answers-container p:hover{
+		border: 3px yellow solid;
+		margin: -3px;
+		cursor: pointer;
+		width: 250px;
+	}
+	
+	#actors-container{
+		margin-top: 36px;
+	}
+	
+	#actors-container .actor{
+		float: left;
+		width: 250px;
+		margin: 24px;
+		padding: 24px;
+		border: 2px gray solid;
+	}
+</style>
+
+<div id="templates">
+	
+	<div id="actor-template">
+		<div class="actor">Sample here.</div>
+	</div>
+	
+</div>
+
+	<section id="question-container">
+		<h2 id="question-content">請問您今天要來點兔子嗎？</h2>
+		<div id="answers-container">
+			<p class="answer">A. 白色</p>
+			<p class="answer">B. 紅色</p>
+			<p class="answer">C. 藍色</p>
+			<p class="answer">D. 黑色</p>
+		</div>
+	</section>
+	
+	<section id="actors-container">
+		<div class="actor">I'm John, I'm alive.</div>
+		<div class="actor">I'm Ada, I'm alive.</div>
+		<div class="actor">I'm Bob, I'm alive.</div>
+		<div class="actor">I'm Cathy, I'm alive.</div>
+	</section>
+
+	<div>
+		<p>經過時間: <span id="timer">0</span></p>
+	</div>
+
+	</body>
+</html>
