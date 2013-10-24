@@ -439,6 +439,8 @@ var Record = Backbone.Model.extend({
 			
 			this.$el.children().remove();
 			
+			var base = groupActors.models.length > 3 ? 3 : 0;
+			
 			for ( var i = 0; i < groupActors.models.length; i ++) {
 				
 				var actor = groupActors.models[i];
@@ -447,7 +449,7 @@ var Record = Backbone.Model.extend({
 					continue;
 				}
 				
-				actor.set('count', parseInt(i)+1);
+				actor.set('count', parseInt(i)+1 + base);
 				
 				var actorBlock = this.template.tmpl( actor.toJSON() );
 				
