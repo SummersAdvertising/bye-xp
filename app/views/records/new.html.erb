@@ -169,13 +169,62 @@ var Record = Backbone.Model.extend({
 				$('.send-button').click(function() {
 					var formArray = $('#record-form').serializeArray();
 					
+					var errors = '';
+					
 					for( var i in formArray ) {
 						var input = formArray[i];
+												
+						switch( input.name ) {
+							case 'name':
+								if ( input.value.length <= 0 ) {
+									errors += "請填寫您的暱稱。\n";
+								}
+							break;
+							case "phone":
+								if ( input.value.length <= 0 ) {
+									errors += "請填寫您的電話。\n";									
+								} else if ( !/^[0-9\-\(\)]+$/.test(input.value) ) {
+									errors += "請檢查您的電話格式。\n";
+								}
+
+							break;
+							case "realname":
+								if ( input.value.length <= 0 ) {
+									errors += "請填寫您的真實姓名。\n";
+									
+								}
+							break;
+							case "address":
+								if ( input.value.length <= 0 ) {
+									errors += "請填寫您的地址。\n";
+									
+								}
+							break;
+							case "email":
+								if ( input.value.length <= 0 ) {
+									errors += "請填寫您的電子信箱。\n";									
+								} else if ( !/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(input.value) ) {
+									errors += "請檢查您的email格式。\n";
+								}
+							break;
+							
+							default: 
+								if ( input.value.length <= 0 ) {
+									errors += '請填寫完整資料，謝謝。\n';									
+								}
+							break;
+						}
 						
-						record.set(input.name, input.value);						
+						if ( errors.length <= 0 ) {
+							record.set(input.name, input.value);	
+						}
+						
 					}
-					
-					record.finalize();					
+					if (errors.length <= 0) {						
+						record.finalize();		
+					} else {
+						alert(errors);
+					}
 					
 				});
 				
@@ -536,7 +585,7 @@ var actorsView;
 	    <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	        <tr>
 	          <td width="11%">性別：</td>
-	          <td width="89%">男<input name="gender" type="radio" value="男" />&nbsp;&nbsp;&nbsp;&nbsp;女<input name="gender" type="radio" value="女" /></td>
+	          <td width="89%">男<input name="gender" type="radio" checked="checked" value="男" />&nbsp;&nbsp;&nbsp;&nbsp;女<input name="gender" type="radio" value="女" /></td>
 	        </tr>
 	      </table>
 	    </div>
