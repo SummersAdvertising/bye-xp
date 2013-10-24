@@ -25,6 +25,8 @@ padding:15px 30px 0 70px;cursor:pointer}
 #select-c{background-image:url(../images/select-c.png);border-top:1px solid #2E656E;border-right:1px solid #75FFFF}
 #select-d{background-image:url(../images/select-d.png);border-top:1px solid #2E656E;border-left:1px solid #2E656E}
 
+#next { height: 46px; }
+
 #next a{display:inline-block;width:123px;height:46px;background:url(../images/next.png) 0 0 no-repeat;margin-left:38%;
 -webkit-transition:all ease .3s;-moz-transition:all ease .3s}
 #next a:hover{margin-left:39%}
