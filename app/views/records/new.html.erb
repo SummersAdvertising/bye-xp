@@ -22,6 +22,14 @@
 
 
 <script>
+
+function padLeft(str){
+	var str = "" + str;
+	var pad = "00";
+	return pad.substring(0, pad.length - str.length) + str;
+}
+
+
 $(document).ready(function(){
 
 	$('#mask').hide().delay(500).fadeIn(500,function(){
@@ -31,9 +39,12 @@ $(document).ready(function(){
 		$('#mask #explain').animate({top:'-100%'},400,'easeInBack',function(){
 			$('#mask').delay(250).fadeOut(500, function() {				
 								
-				var time = 0;
 				
-				timer = setInterval(function() { time ++; $('#timer').html(time) }, 1000)
+				
+				timer = setInterval(function() { 
+					time ++; 
+					$('#timer').html( padLeft(Math.floor(time/ 3600)) + ":" + padLeft(Math.floor(time/ 60)) + ":" + padLeft(time % 60 )) }, 1000
+				)
 				
 			})
 		})
@@ -131,7 +142,7 @@ var Record = Backbone.Model.extend({
 		 	
 			if ( this.current >= groups.length-1 ) {
 				
-				record.set('time', $('#timer').html());
+				record.set('time', time);
 				
 				var score = record.get('score');
 				
@@ -453,6 +464,7 @@ var actors;
 var record = new Record();
 
 var timer;
+var time = 0;
 
 var groupView;
 var questionView;
@@ -579,7 +591,9 @@ var actorsView;
       <table width="100%" border="0" cellpadding="0" cellspacing="0">
         <tr id="time">
           <td width="31%">經過時間：</td>
-          <td id="timer">00:00:00</td>
+          <td id="timer">
+          	00:00:00
+          </td>
         </tr>
         <tr id="rescue">
           <td>成功救援：</td>
