@@ -1,0 +1,23 @@
+
+#intro{background:url(../images/hero-intro.png) 10% -15px no-repeat;height:300px;padding:150px 0 0 45%}
+#intro h2{width:312px;height:51px;text-indent:-7777px;background:url(../images/hero-h2.png) 0 0 no-repeat}
+
+#article{width:644px;margin:0 auto}
+#article div{width:644px;height:180px;background-position:0 0;background-repeat:no-repeat;margin:10px 0;
+position:relative}
+#article .best{background-image:url(../images/hero-best.png)}
+#article .good{background-image:url(../images/hero-good.png)}
+#article .bad{background-image:url(../images/hero-bad.png)}
+
+#article table{width:360px;color:#888888;position:absolute;top:50px;left:0}
+#article .self table{color:#EDCB57}
+#article .rank{width:120px;height:110px;font:300 70px 'arial black'}
+#article .info{padding:0 0 0 10px;width:240px}
+#article .info b{font:900 30px 微軟正黑體,Microsoft JhengHei}
+
+#article hr{margin:20px 0;border-top:1px solid #75FFFF;border-bottom:1px solid #2E656E}
+
+#page{text-align:center;margin:40px 0;padding:20px 0 0 0;background:url(../images/page.png) center 0 no-repeat}
+#page a{display:inline-block;width:25px;height:25px;text-align:center;margin:0 5px;border-radius:50%;padding:3px 0 0 0;
+color:#444}
+#page a:hover,#page .active{background:#6BD9EA;color:#fff}

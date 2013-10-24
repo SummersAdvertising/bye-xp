@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130923092151) do
+ActiveRecord::Schema.define(:version => 20131023105808) do
 
   create_table "records", :force => true do |t|
     t.integer  "score"
@@ -24,6 +24,8 @@ ActiveRecord::Schema.define(:version => 20130923092151) do
     t.text     "address"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "realname"
+    t.string   "gender"
   end
 
 end

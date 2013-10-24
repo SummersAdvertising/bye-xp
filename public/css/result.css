@@ -1,0 +1,23 @@
+
+.box{width:1139px;position:relative;top:20%;margin:0 auto;}
+.box table{width:560px;position:absolute;right:180px;font-size:22px}
+
+.box #achivement p{color:#D3D3D3;text-shadow:2px 2px 0 #000}
+.box #achivement strong{font:900 88px arial black}
+.box #achivement span{color:#fff}
+.box #link td{height:110px}
+.box #link a{color:#fdff78;border-bottom:1px solid #fdff78}
+.box #link a:hover{color:#eee;border-bottom:1px solid #eee}
+.box #button a{margin:0 10px}
+.box #button a:hover{position:relative;top:-3px}
+
+#failbox{height:572px;background:url(../images/fail-bg.png) 0 0 no-repeat}
+#failbox table{top:50px}
+#failbox #achivement td{height:220px}
+
+#sucsbox{height:592px;background:url(../images/sucs-bg.png) 0 0 no-repeat}
+#sucsbox table{top:-80px}
+#sucsbox #award p{color:#fff}
+#sucsbox #award span{color:#ffc705}
+#sucsbox #achivement td{height:180px}
+

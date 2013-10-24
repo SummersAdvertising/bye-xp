@@ -1,0 +1,25 @@
+html{background:#222}
+body{width:1280px;margin:0 auto;font:300 15px 微軟正黑體,Microsoft JhengHei;line-height:1.7em}
+a{font:300 15px 微軟正黑體,Microsoft JhengHei;text-decoration:none}
+.clear{clear:both}
+
+p,div{line-height:1.7em}
+
+#header{height:57px;background:url(../images/top.jpg) 0 0 repeat-x;position:relative}
+#hero-link{position:absolute;width:191px;height:107px;background:url(../images/link.png) 0 0 no-repeat;
+display:block;top:-5px;right:0;-webkit-transition:all ease .3s;-moz-transition:all ease .3s}
+#hero-link:hover{top:0}
+
+h1{float:left;height:100%;margin:0 0 0 60px}
+h1 a{display:block;width:107px;height:100%;background:url(../images/logo-w.gif) 0 center no-repeat;text-indent:-7777px}
+#header ul{overflow:hidden;height:100%;float:right;margin:0 155px 0 0}
+#header li{float:left;height:100%;border-right:1px solid #1F2223;border-left:1px solid #303335}
+#header li a{display:block;height:100%;padding:20px 15px 0 15px;margin:0 1px 0 2px;color:#fff}
+#header li a:hover,#header .active a{background:url(../images/active.jpg) 0 2px repeat-x}
+
+#content{background:url(../images/bg.jpg) center 0 no-repeat #51CEE0;overflow:hidden}
+
+#footer{height:50px;background:url(../images/logo-b.gif) 98% 15% no-repeat #38A4C0;text-align:right;
+font-size:12px;color:#0e2d55;padding:7px 130px 0 0}
+#footer a{font-size:12px;color:#0e2d55}
+#footer a:hover{color:#eee}

@@ -1,37 +1,57 @@
-<h1>Listing records</h1>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>無標題文件</title>
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/hero.css">
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/auto-full-height.min.js"></script>
+</head>
 
-<table>
-  <tr>
-    <th>Score</th>
-    <th>Time</th>
-    <th>Questions</th>
-    <th>Answers</th>
-    <th>Name</th>
-    <th>Email</th>
-    <th>Phone</th>
-    <th>Address</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<body>
+<div id="content" _height="auto">
+  <div id="intro">
+    <h2>超級特務英雄榜</h2>
+    <p>不是英雄不上榜，每一枚榮譽勳章，都代表您已挑戰自我，累積過人實力，<br>
+      恭喜各位超級特務晉升英雄等級！</p>
+  </div>
+  
+  
 
-<% @records.each do |record| %>
-  <tr>
-    <td><%= record.score %></td>
-    <td><%= record.time %></td>
-    <td><%= record.questions %></td>
-    <td><%= record.answers %></td>
-    <td><%= record.name %></td>
-    <td><%= record.email %></td>
-    <td><%= record.phone %></td>
-    <td><%= record.address %></td>
-    <td><%= link_to 'Show', record %></td>
-    <td><%= link_to 'Edit', edit_record_path(record) %></td>
-    <td><%= link_to 'Destroy', record, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
+  <div id="article">
+<% if !@myRecord.nil? %>
+    <div class="<%= get_rank( @myRecord ) %> self">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td class="rank" align="center"><%= @myRank %></td>
+          <td class="info"><p><b><%= @myRecord.name %></b><br>
+            時間 : <%= ( @myRecord.time/60 ).floor %>分<%= @myRecord.time % 60 %>秒     分數 : <%= ( (100/15) * @myRecord.score).floor %>分<br>
+            成功救援：<%= @myRecord.score %>人</p></td>
+        </tr>
+      </table>
+    </div>
 <% end %>
-</table>
+    <hr></hr>
+ 
+ <% i =1 %>
+<% @records.each do |record| %>
+    <div class="<%= get_rank( record ) %>">
+    	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td class="rank" align="center"><%= i %></td>
+          <td class="info"><p><b><%= record.name %></b><br>
+            時間 : <%= ( record.time/60 ).floor %>分<%= record.time % 60 %>秒     分數 : <%= ( (100/15) * record.score).floor %>分<br>
+            成功救援：<%= record.score %>人</p></td>
+        </tr>
+      </table>
+    </div>
+<% i += 1 %>
+<% end %>
 
-<br />
-
-<%= link_to 'New Record', new_record_path %>
+ <!--div id="page"> <a href="#">&lt;</a><a href="#" class="active">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">&gt;</a> </div-->
+</div>
+<!--content-->
+</body>
+</html>

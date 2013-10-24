@@ -1,152 +1,622 @@
 
-<script type="text/javascript">
+
+<link rel="stylesheet" href="/css/game.css">
+<script src="/js/jquery-1.10.2.min.js"></script>
+<script src="/js/auto-full-height.min.js"></script>
+<script src="/js/jquery.easing.1.3.js"></script>
+
+
+<script src="http://documentcloud.github.com/underscore/underscore-min.js"></script>
+<script src="/js/jquery.tmpl.js"></script>
+<script src="/js/backbone.js"></script>
+<script src="/js/data.js"></script>
+
+<script id="answer-template" type="text/x-jquery-tmpl">
+	<li class="answer" id="select-${num}" data-id="${id}"><a>${content}</a></li>
+</script>
+
+
+<script id="actor-template" type="text/x-jquery-tmpl">
+      <div class="people people-${count}" id="${name}"><img src="${image}"/></div>
+</script>
+
+
+<script>
+$(document).ready(function(){
+
+	$('#mask').hide().delay(500).fadeIn(500,function(){
+		$('#mask #explain').delay(250).animate({top:'30%'},800,'easeOutBack')
+		});	
+	$('#mask #explain a').click(function(){
+		$('#mask #explain').animate({top:'-100%'},400,'easeInBack',function(){
+			$('#mask').delay(250).fadeOut(500, function() {				
+								
+				var time = 0;
+				
+				timer = setInterval(function() { time ++; $('#timer').html(time) }, 1000)
+				
+			})
+		})
+	});
+});
+
+/* alias away the sync method */
+Backbone._sync = Backbone.sync;
+
+/* define a new sync method */
+Backbone.sync = function(method, model, success, error) {
+  /* only need a token for non-get requests */
+  if (method == 'create' || method == 'update' || method == 'delete') {
+    /* grab the token from the meta tag rails embeds */
+    var auth_options = {};
+    auth_options[$("meta[name='csrf-param']").attr('content')] =
+                 $("meta[name='csrf-token']").attr('content');
+    /* set it as a model attribute without triggering events */
+    model.set(auth_options, {silent: true});
+  }
+  /* proxy the call to the old sync method */
+  return Backbone._sync(method, model, success, error);
+}
+
+// Override Backbone.sync to add CSRF-TOKEN HEADER
+Backbone.sync = (function(original) {
+  return function(method, model, options) {
+    options.beforeSend = function(xhr) {
+      xhr.setRequestHeader('X-CSRF-Token', $("meta[name='csrf-token']").attr('content'));
+    };
+    original(method, model, options);
+  };
+})(Backbone.sync);
 
 Backbone.emulateHTTP = true;
 Backbone.emulateJSON = true;
 
-Question = Backbone.Model.extend({
-	initialize: function() {		
-		this.bind("change:text", function() {
-			console.log(question.get('text'));
-		});
-		
-		this.bind("error", function( model, error ) {
-			console.log('oops');
-		});
-		
-	},
-	
-	validate: function( attributes ) {
-	console.log('in validation');
-		if ( attributes.text == 'Yuzhe' ) {
-			return 'Yuzhe 0.0';
-		}
-	}
-	
-});
-
-Data = new Backbone.Model({
-	data: [
-		{ text: 'first', href: "www.google.com.tw" },
-		{ text: 'second', href: "www.yahoo.com.tw" },
-		{ text: 'third', href: "www.facebook.com" },
-	]
-});
-
-var View = Backbone.View.extend({
+var Record = Backbone.Model.extend({
 	initialize: function() {
-		console.log(' view initialized ');
-	},
-	el: '#container',
-	events: {
-		"click": "render"
-	},
-	template: $("#list-template").children(),
-	render: function() {
-		var data = this.model.get( 'data' );
-		
-		for( var i=0, l=data.length; i <l; i ++ ) {
-			var a = this.template.clone().find('a');
-			var li = a.attr('href', data[i].href);
-			li = li.text( data[i].text ).end();
-			this.$el.find('ul').append(li);
-		}
-	}
-});
-
-var Router = Backbone.Router.extend({
-	routes: {
-		":route1": "foo1",
-		":route1/:path1": "foo2",
-		"*action": "foo_action"
-	},
-	foo1: function(p1) {
-		console.log('foo1： ' + p1);
-	},
-	foo2: function(p1, p2) {
-		console.log('foo2：' + p1 + ', ' + p2);
-	},
-	foo_action: function(a) {
-	console.log('this is in foo action');
-		if ( a !== '' ) {
-			console.log('foo_action：' + a);
-		}
-	}
-});
-
-var Person = Backbone.Model.extend({
-	initialize: function() {
-		console.log("Person initialized");
-		this.on('all', function(e) {
-			console.log(this.get('name') + " event: " + e);
-		});
-	},
-	defaults: {
-		 name: "undefined",
-		 age: "undefined"
-	},
+	},	
 	urlRoot: "/records/",
-	url: function() {
-		var base = this.urlRoot || ( this.collection && this.collection.url ) || "/" ;
-		if ( this.isNew() ) return base;
-		return base + "?id=" + encodeURIComponent(this.id); 
-	}
-});
-
-
-var People = Backbone.Collection.extend({
-	initialize: function() {
-		this.on('all', function(e) {
-			console.log("People event: " + e);
-		});
-		
+	defaults: {
+		score: 0,
+		answers: [],
+		questions: [],
+		time: 0,
+		name: '',
+		email: '',
+		phone: ''
 	},
-	model: Person,
-	url: "/records"
+	gained: function() {
+		this.set('score', this.get('score') +1);
+	},
+	answered: function( answer ) {
+		var answers = this.get('answers');
+		answers.push( answer );
+		this.set('answers', answers);
+	},
+	quested: function( content ) {		
+		var questions = this.get('questions');
+		questions.push( content );
+		this.set('questions', questions);
+	},
+	finalize: function() {
+		
+		var self = this;
+		
+		this.save({}, {
+			success: function() {
+				window.location = '/records?email=' + self.get('email')
+			}			
+		});		
+	}
 });
  
+ var Group = Backbone.Model.extend({
+ 		initialize: function( data ) {
+	 			 		
+	 		this.questions = new Questions(data.questions);
+ 		}
+	 	
+ 	});
+ 	
+ 	var Groups = Backbone.Collection.extend({
+ 		model: Group,
+	 	initialize: function() {
+	 	}
+ 	});
+ 	
+ 	var GroupView = Backbone.View.extend({
+	 	initialize: function() {		 	
+	 	},
+		current: 0,
+	 	next: function() {
+		 	
+			if ( this.current >= groups.length-1 ) {
+				
+				record.set('time', $('#timer').html());
+				
+				var score = record.get('score');
+				
+				$('#content').children().fadeOut();
+				
+				$('.rescue-result').html(score);
+				$('.score-result').html( Math.floor( (100/15)*score ) );
+				
+				if ( score > 10 ) {					
+					$('#sucsbox').fadeIn();
+				} else {	
+					$('#failbox').fadeIn();					
+				}
+				
+				$('.fill-form-button').click(function() {					
+					$('#content').children().fadeOut();					
+					$('#form-container').fadeIn();
+					
+					
+				});
+				
+				$('.send-button').click(function() {
+					var formArray = $('#record-form').serializeArray();
+					
+					for( var i in formArray ) {
+						var input = formArray[i];
+						
+						record.set(input.name, input.value);						
+					}
+					
+					record.finalize();					
+					
+				});
+				
+				clearInterval(timer)
 
+				return;
+			}
+			
+			this.current ++;
+			this.render();
+			
+	 	},
+	 	render: function() {
+	 	
+	 		var group = groups.at(this.current);
+	 	
+	 		questions = new Questions( group.questions.shuffle() );
+	 		
+			questionView.render();
+			
+			groupActors.reset();
+			
+			questions.each(function(m) { 
+				groupActors.add(actors.where(m.get('actor')));
+			});
+			
+			actorsView.render(groupActors);
+			
+			$('#group-image').attr('src', '/images/game/' + group.get('image'));
+			$('#group-description').html( group.get('description') );
+		 	
+	 	}
+ 	});
+ 
+	var Question = Backbone.Model.extend({
+		initialize: function(data) {
+			this.answers = new Answers(data['answers']);
+			this.answers.parent = this;
+		},
+		answers: {},
+		defaults: {
+			answered: 'undefined'
+		}
+		
+	});
+	
+	var Questions = Backbone.Collection.extend({
+		model: Question,
+		actors: {},
+		
+		initialize: function() {							
+		}
+	});
+	
+	var QuestionView = Backbone.View.extend({
+		el: '#question',
+		current: 0,
+		initialize: function() {
+			
+			$('#next').click(function(){ questionView.next(); });
+		},
+		next: function() {
+			
+			if ( this.current >= questions.length-1 ) {
+				
+				this.current = 0;
+				groupView.next();
+
+				return;
+			}
+			
+			this.current ++;
+			actorsView.render(groupActors);
+			this.render();
+			
+		},
+		render: function() {
+						
+			var question = questions.at( this.current );
+			
+			record.quested( question.get('content') );
+			
+			$('#question-content').html( '<img src="/images/game/' + question.get('image') + '" />' );
+			
+			if ( question.get('nested') ) {				
+				$('#nested').html( question.get('nested') ).show();
+			} else {
+				$('#nested').hide();
+			}
+			
+			answersView.render( question.answers );
+			
+			$('#next').hide();
+		}
+		
+	});
+	
+	var Answer = Backbone.Model.extend({
+		initialize: function() {
+		},
+		defaults: {
+			content: 'undefined',
+			currect: false
+		},
+		stringify: function() {
+			return JSON.stringify(this.toJSON());
+		}
+	});
+	
+	var Answers = Backbone.Collection.extend({
+		model: Answer,
+		initialize: function() {
+			
+		},
+		setup: function(raw) {
+			for ( var i in raw ) {
+				var answer = new Answer( raw[i] );
+				this.add(answer);
+			}		
+		},
+		stringify: function() {
+			
+			var string = '[';
+			
+			for ( var i in this.models ) {
+				string += this.models[i].stringify();
+				
+				if ( i < this.models.length-1 ) {
+					string += ',';
+				}
+			}
+			
+			string += ']';
+			
+			return string;
+		},
+		
+	});
+	
+	var AnswersView = Backbone.View.extend({
+		initialize: function(data) {
+		},
+		num: [ 'a', 'b', 'c', 'd', 'e' ],
+		el: '#select',
+		template: $('#answer-template'),
+		events: {
+		},
+		render: function( answers ) {
+			
+			var self = this;
+			this.answers = answers;
+			
+			var sequence = [];			
+			for(var j =0; j < answers.models.length; j++) {
+				sequence.push(j);
+			}			
+			sequence = _(sequence).shuffle();
+			
+			this.$el.children().remove();
+			
+			for( var i in answers.models) {
+				var answer = answers.models[ sequence[i] ];
+				
+				var fillin = answer.toJSON();
+				fillin.num = this.num[i];
+				fillin.id = answer.cid;
+				
+				var answerBlock = this.template.tmpl(fillin); 
+				answer.view = answerBlock;
+				
+				this.$el.append(answerBlock);
+				
+				answerBlock.click(function() {
+					
+					var answer = self.answers.getByCid($(this).data('id'));
+					
+					$(this).parent().children().unbind('click');
+				
+					record.answered( answer.get('content') );
+					
+					if ( answer.get('currect') == true ) {
+					
+						actorsView.survive( self.answers.parent.get( 'actor' ).name );
+						$(this).children('a').addClass("right");
+						
+						record.gained();
+						
+					} else {
+						var currectAnswer = self.answers.where({currect: true})[0];
+						
+						self.$el.find('[data-id=' + currectAnswer.cid + ']').children('a').addClass("right");
+						$(this).children('a').addClass("wrong");
+						
+						actorsView.dead( self.answers.parent.get( 'actor' ).name );
+					}
+					
+					$('#score').html( record.get('score') );
+					$('#next').fadeIn('slow');
+					
+					//setTimeout(function() { questionView.next(); }, 2000);
+					
+				});
+				
+			}
+			
+		}
+	});
+	
+	var Actor = Backbone.Model.extend({
+		initalize: function() {
+			
+		},
+		defaults: {
+			name: 'undefined',
+			image: 'undefined'
+		}
+	});
+	
+	var Actors = Backbone.Collection.extend({
+		model: Actor,
+		initialize: function() {
+			
+		}
+	});
+	
+	var ActorsView = Backbone.View.extend({
+		el: '#office',
+		template: $('#actor-template'),
+		initialize: function() {
+			
+		},
+		survive: function(actorName) {
+			groupActors.where({name: actorName})[0].set({dead: false});
+			
+			groupActors.each(function(actor) {
+				$('#' + actor.get('name') ).find('img').attr('src', actor.get('hail'));
+			});
+			
+//			this.render(groupActors);
+			
+		},
+		dead: function(actorName) {
+			groupActors.where({name: actorName})[0].set({dead: true});
+			
+			$('#' + actorName ).fadeOut('slow');
+		},
+		render: function(groupActors) {
+			
+			this.$el.children().remove();
+			
+			for ( var i = 0; i < groupActors.models.length; i ++) {
+				
+				var actor = groupActors.models[i];
+				
+				if ( actor.get('dead') == true ) {
+					continue;
+				}
+				
+				actor.set('count', parseInt(i)+1);
+				
+				var actorBlock = this.template.tmpl( actor.toJSON() );
+				
+				this.$el.append(actorBlock);
+				
+			}
+		}
+	});
+ 
 $(document).ready(function() {
-
-var person = new Person({id:1});
-person.fetch();
-
-person = new Person({id: 1, name: "Joe Zim", age: 23});
-person.save();
-
-person = new Person({id:1, name: "Joe Zim", age: 23});
-person.save();
-person.destroy();
-
-
-var people = new People();
-
-people.fetch();
-people.create({name: "Joe Zim", age: 23});
-prople.create({ id: 6, name: "Chuck Norris", age: 72 });
-
+ 
+	groups = new Groups( _.shuffle(data.groups) );
+	actors = new Actors(data.actors);
+	groupActors = new Actors();
+		
+	groupView = new GroupView();	
+		
+	questionView = new QuestionView();
+	answersView = new AnswersView();
+	actorsView = new ActorsView();
+	
+	groupView.render();
 });
 
-//var question = new Question( { text: "Yuzhe", answers: [1,2,3,4] } );
+var groups;
+var questions;
+var actors;
+
+var record = new Record();
+
+var timer;
+
+var groupView;
+var questionView;
+var answersView;
+var actorsView;
 
 </script>
 
-<div id="container">
-	<button>我抓</button>
-	<ul id="list"></ul>
+<div id="mask">
+  <div id="explain"><a href="#"></a></div>
 </div>
+<div id="content" _height="auto">
+  <div id="form-container" style="display: none;" >	
+	  <div id="intro">
+	    <p>填寫資料參加抽獎，就有機會獲得 Windows 8 炫耀 Combo USB</p>
+	  </div>
+	  <form id="record-form">
+	  <div id="article">
+	    <div class="row">
+	      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+	        <tr>
+	          <td width="11%">姓名：</td>
+	          <td width="89%"><input name="realname" type="text" class="text"/></td>
+	        </tr>
+	      </table>
+	    </div>
+	    <div class="row">
+	      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+	        <tr>
+	          <td width="11%">暱稱：</td>
+	          <td width="89%"><input name="name" type="text" class="text"/></td>
+	        </tr>
+	      </table>
+	    </div>
+	    <div class="row">
+	      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+	        <tr>
+	          <td width="11%">電話：</td>
+	          <td width="89%"><input name="phone" type="text" class="text"/></td>
+	        </tr>
+	      </table>
+	    </div>
+	    <div class="row">
+	      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+	        <tr>
+	          <td width="11%">Mail：</td>
+	          <td width="89%"><input name="email" type="text" class="text"/></td>
+	        </tr>
+	      </table>
+	    </div>
+	    <div class="sex">
+	    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+	        <tr>
+	          <td width="11%">性別：</td>
+	          <td width="89%">男<input name="gender" type="radio" value="男" />&nbsp;&nbsp;&nbsp;&nbsp;女<input name="gender" type="radio" value="女" /></td>
+	        </tr>
+	      </table>
+	    </div>
+	    <div class="row">
+	      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+	        <tr>
+	          <td width="11%">地址：</td>
+	          <td width="89%"><input name="address" type="text" class="text"/></td>
+	        </tr>
+	      </table>
+	    </div>
+	    <div class="send">
+	    <span>*以上個人資料為得獎聯絡方式，請務必正確填寫，以維護您的得獎權利。</span><br>
+	        <input name="" type="checkbox" value="" class="checkbox"/><strong>我已詳閱<a href="detail.htm" target="_blank">活動辦法及隱私權聲明</a></strong><br>
+	        <input name="" type="button" class="send-button"/>
+	    </div>
+	  </div>
+  </form>
+  </div>
+  <!-- form-container -->
+  
 
-<div id="list-template">
-	<li><a href=""></a></li>
+	<div id="sucsbox" class="box" style="display: none;">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr id="award">
+        <td align="center" valign="top"><img src="/images/sucs-award1.png"/>
+          <p>獲得<span>懂很多</span>勳章一枚</p>
+          <img src="/images/sucs-dcr.png"/></td>
+      </tr>
+      <tr id="achivement">
+        <td align="center" valign="top"><p>成績 <strong class="score-result">80</strong> 分，救援 <strong class="rescue-result">11</strong> 人</p>
+          <span>表現出色，恭喜過關！不愧是最強XP分手特務</span></td>
+      </tr>
+      <tr id="button">
+        <td align="center" valign="top"><a href="#" target="_blank"><img src="/images/fail-bt1.png"/></a><a href="javascript:void(0);"><img class="fill-form-button" src="/images/fail-bt2.png"/></a></td>
+      </tr>
+    </table>
+  </div>
+  
+  <div id="failbox" class="box" style="display: none;">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr id="achivement">
+        <td colspan="2" align="center" valign="top"><p>成績 <strong class="score-result">20</strong> 分，救援 <strong class="rescue-result">3</strong> 人</p>
+          <span>糟糕，任務失敗，趕快加強訓練重新挑戰！</span></td>
+      </tr>
+      <tr id="link">
+        <td width="50%" valign="top"><a href="#" target="_blank">●  XP終止支援小幫手</a><br>
+          <br>
+          <a href="#" target="_blank">●  探索Windows 7、探索Windows 8 </a></td>
+        <td width="50%" valign="top"><a href="#" target="_blank">●  Windows XP SP3  終止支援常見問答集</a><br>
+          <br>
+          <a href="#" target="_blank">●  Windows 解決方案</a></td>
+      </tr>
+      <tr id="button">
+        <td colspan="2" align="center" valign="top"><a href="#" target="_blank"><img src="/images/fail-bt1.png"/></a><a href="javascript:void(0);"><img class="fill-form-button" src="/images/fail-bt2.png"/></a></td>
+      </tr>
+    </table>
+  </div>
+
+  <div id="aside">
+    <h2>分手特務</h2>
+    <div id="text">
+      <h3><img id="group-image" src="/images/game/gp1-h3.png"/></h3>
+      <p id="group-description" >Windows XP 終止支援倒數計時中<br>
+        別等到日期逼近才行動，<br>
+        認清風險儘早準備，<br>
+        升級 Windows 7或Windows 8<br>
+        才能氣定神閒！ </p>
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr id="time">
+          <td width="31%">經過時間：</td>
+          <td id="timer">00:00:00</td>
+        </tr>
+        <tr id="rescue">
+          <td>成功救援：</td>
+          <td><strong id="score">0</strong><span>人</span></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <!--aside-->
+  	
+  <div id="article">
+    <div id="question">
+      <h4 id="question-content"><img src="/images/game/gp3-h4-3.png"/></h4>
+      <p id="nested" style="display:none;">
+      A.    安裝數台Windows 7或Windows 8參考電腦<br>
+		B.    將通過相容性測試的企業內部應用程式，安裝於參考電腦<br>
+		C.    擷取參考電腦上的Windows 7或Windows 8系統映像檔<br>
+		D.   決定部署方式，調整自動化部署程度<br>
+		E.    使用網路、USB隨 身碟、光碟媒體部署
+      </p>
+      <ul id="select">
+        <li id="select-a"><a class="wrong">市面上不再販售 Windows XP</a></li>
+        <li id="select-b"><a class="wrong">無法再透過微軟得到相關技術支援</a></li>
+        <li id="select-c"><a class="wrong">不再釋出任何系統更新</a></li>
+        <li id="select-d"><a class="right">以上皆是</a></li>
+      </ul>
+      <div id="next"><a href="#"></a></div>
+    </div>
+    <!--question-->
+    <div id="office">
+      <div class="people people-4"><img src="/images/game/gp3-p1.png"/></div>
+      <div class="people people-5"><img src="/images/game/gp3-p2.png"/></div>
+      <div class="people people-6"><img src="/images/game/gp3-p3.png"/></div>
+      <div class="people people-7"><img src="/images/game/gp3-p4.png"/></div>
+    </div>
+    <!--office--> 
+  </div>
+  <!--article--> 
 </div>
-
-<a href="#route1">route1</a>
-<a href="#route1/path1">route1/path1</a>
-<a href="#route1/path1/123">route1/path1/123</a>
-<a href="#route1/path1/喔耶">route1/path1/喔耶</a>
-
-<h1>New record</h1>
-
-<%= render 'form' %>
-
-<%= link_to 'Back', records_path %>
+<!--content-->
