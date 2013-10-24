@@ -50,7 +50,7 @@ position:absolute;bottom:45px;left:34%;-webkit-transition:all ease .3s;-moz-tran
 
 /* Result */
 
-.box{width:1139px;position:relative;top:20%;margin: 12% auto;}
+.box{width:1139px;position:relative;top:20%;margin: 0 auto;}
 .box table{width:560px;position:absolute;right:180px;font-size:22px}
 
 .box #achivement p{color:#D3D3D3;text-shadow:2px 2px 0 #000}

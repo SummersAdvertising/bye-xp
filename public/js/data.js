@@ -108,7 +108,7 @@
 		 			image: 'gp4-h4-2.png'
 		 		},
 		 		{ 	content: "關於Windows 8.1 「安全性」這項特色，下列哪一個描述不符合？",
-			 		answers: [{ content: '內建Windows Defender防毒軟體'}, { content: 'Bitlocker資安防護滴水不漏'}, { content: 'SmartScreen自動隔絕惡意網站'}, { content: 'Do Not Track保護IE瀏覽紀錄不被追蹤'}, { content: '從電源開啟的那一刻隨時會遭受惡意程式攻擊', currect: true}],
+			 		answers: [{ content: '內建Windows Defender防毒軟體'}, { content: 'Bitlocker資安防護滴水不漏'}, { content: 'Do Not Track保護IE瀏覽紀錄不被追蹤'}, { content: '從電源開啟的那一刻隨時會遭受惡意程式攻擊', currect: true}],
 		 			actor: { name: "N" },
 		 			group: 'feature',
 		 			image: 'gp4-h4-3.png'

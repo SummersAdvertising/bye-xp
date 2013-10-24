@@ -27,7 +27,7 @@
         <tr>
           <td class="rank" align="center"><%= @myRank %></td>
           <td class="info"><p><b><%= @myRecord.name %></b><br>
-            時間 : <%= ( @myRecord.time/60 ).floor %>分<%= @myRecord.time % 60 %>秒     分數 : <%= ( (100/15) * @myRecord.score).floor %>分<br>
+            時間 : <%= ( @myRecord.time/60 ).floor %>分<%= @myRecord.time % 60 %>秒     分數 : <%= ( (100*@myRecord.score/15)).floor %>分<br>
             成功救援：<%= @myRecord.score %>人</p></td>
         </tr>
       </table>
@@ -42,7 +42,7 @@
         <tr>
           <td class="rank" align="center"><%= i %></td>
           <td class="info"><p><b><%= record.name %></b><br>
-            時間 : <%= ( record.time/60 ).floor %>分<%= record.time % 60 %>秒     分數 : <%= ( (100/15) * record.score).floor %>分<br>
+            時間 : <%= ( record.time/60 ).floor %>分<%= record.time % 60 %>秒     分數 : <%= ( (100 * record/15).score).floor %>分<br>
             成功救援：<%= record.score %>人</p></td>
         </tr>
       </table>
@@ -50,7 +50,6 @@
 <% i += 1 %>
 <% end %>
 
- <!--div id="page"> <a href="#">&lt;</a><a href="#" class="active">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">&gt;</a> </div-->
 </div>
 <!--content-->
 </body>

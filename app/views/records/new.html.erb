@@ -12,7 +12,7 @@
 <script src="/js/data.js"></script>
 
 <script id="answer-template" type="text/x-jquery-tmpl">
-	<li class="answer" id="select-${num}" data-id="${id}"><a>${content}</a></li>
+	<li class="answer" id="select-${num}" data-id="${id}"><a style="font-size: ${fontSize}px">${content}</a></li>
 </script>
 
 
@@ -39,8 +39,6 @@ $(document).ready(function(){
 		$('#mask #explain').animate({top:'-100%'},400,'easeInBack',function(){
 			$('#mask').delay(250).fadeOut(500, function() {				
 								
-				
-				
 				timer = setInterval(function() { 
 					time ++; 
 					$('#timer').html( padLeft(Math.floor(time/ 3600)) + ":" + padLeft(Math.floor(time/ 60)) + ":" + padLeft(time % 60 )) }, 1000
@@ -152,6 +150,10 @@ var Record = Backbone.Model.extend({
 				$('.score-result').html( Math.floor( (100/15)*score ) );
 				
 				if ( score > 10 ) {					
+					if (score > 13) {
+						$('#medal-image').attr('src', '/images/game/sucs-award2.png');
+						$('#medal-name').html('金厲害');
+					}
 					$('#sucsbox').fadeIn();
 				} else {	
 					$('#failbox').fadeIn();					
@@ -340,6 +342,19 @@ var Record = Backbone.Model.extend({
 				var fillin = answer.toJSON();
 				fillin.num = this.num[i];
 				fillin.id = answer.cid;
+								
+				var length = fillin.content.length;
+				switch( true ) {
+					case length > 48:
+						fillin.fontSize = 12;
+					break;
+					case length > 27:
+						fillin.fontSize = 14;
+					break;
+					default:
+						fillin.fontSize = 19;					
+					break;
+				}
 				
 				var answerBlock = this.template.tmpl(fillin); 
 				answer.view = answerBlock;
@@ -545,8 +560,8 @@ var actorsView;
 	<div id="sucsbox" class="box" style="display: none;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr id="award">
-        <td align="center" valign="top"><img src="/images/sucs-award1.png"/>
-          <p>獲得<span>懂很多</span>勳章一枚</p>
+        <td align="center" valign="top"><img id="medal-image" src="/images/sucs-award1.png"/>
+          <p>獲得<span id="medal-name">懂很多</span>勳章一枚</p>
           <img src="/images/sucs-dcr.png"/></td>
       </tr>
       <tr id="achivement">
