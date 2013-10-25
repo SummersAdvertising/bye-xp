@@ -171,9 +171,16 @@ var Record = Backbone.Model.extend({
 				});
 				
 				$('.send-button').click(function() {
+				
+					var errors = '';
+					
+					if ($('#agree-privacy:checked').length <= 0) {
+						alert("您必須同意活動辦法與隱私權聲明才能參加抽獎喔！");
+						return;						
+					}
+				
 					var formArray = $('#record-form').serializeArray();
 					
-					var errors = '';
 					
 					for( var i in formArray ) {
 						var input = formArray[i];
@@ -610,7 +617,7 @@ var actorsView;
 	    </div>
 	    <div class="send">
 	    <span>*以上個人資料為得獎聯絡方式，請務必正確填寫，以維護您的得獎權利。</span><br>
-	        <input id="agree-privacy" name="" type="checkbox" value="" class="checkbox"/><strong>我已詳閱<a href="detail.htm" target="_blank">活動辦法及隱私權聲明</a></strong><br>
+	        <input id="agree-privacy" name="" type="checkbox" value="true" class="checkbox"/><strong>我已詳閱<a href="detail.htm" target="_blank">活動辦法及隱私權聲明</a></strong><br>
 	        <input name="" type="button" class="send-button"/>
 	    </div>
 	  </div>
@@ -631,7 +638,7 @@ var actorsView;
           <span>表現出色，恭喜過關！不愧是最強XP分手特務</span></td>
       </tr>
       <tr id="button">
-        <td align="center" valign="top"><a href="#" target="_blank"><img src="/images/fail-bt1.png"/></a><a href="javascript:void(0);"><img class="fill-form-button" src="/images/fail-bt2.png"/></a></td>
+        <td align="center" valign="top"><a href="http://download.microsoft.com/download/A/0/D/A0D4CF2B-9B70-4846-A18D-0765D1F75343/MDT2012DeploymentWindows8.pdf" target="_blank"><img src="/images/fail-bt1.png"/></a><a href="javascript:void(0);"><img class="fill-form-button" src="/images/fail-bt2.png"/></a></td>
       </tr>
     </table>
   </div>
@@ -642,16 +649,20 @@ var actorsView;
         <td colspan="2" align="center" valign="top"><p>成績 <strong class="score-result">20</strong> 分，救援 <strong class="rescue-result">3</strong> 人</p>
           <span>糟糕，任務失敗，趕快加強訓練重新挑戰！</span></td>
       </tr>
+      
       <tr id="link">
-        <td width="50%" valign="top"><a href="#" target="_blank">●  XP終止支援小幫手</a><br>
+        <td width="50%" valign="top"><a href="http://www.microsoft.com/zh-tw/windows/endofsupport.aspx" target="_blank">●  XP終止支援小幫手</a><br>
           <br>
-          <a href="#" target="_blank">●  探索Windows 7、探索Windows 8 </a></td>
-        <td width="50%" valign="top"><a href="#" target="_blank">●  Windows XP SP3  終止支援常見問答集</a><br>
+          <a href="http://technet.microsoft.com/zh-tw/windows/discover-and-explore-windows-7.aspx" target="_blank">●  探索Windows 7</a><br>
           <br>
-          <a href="#" target="_blank">●  Windows 解決方案</a></td>
+          <a href="http://www.microsoft.com/taiwan/promo/bye-xp/qa.htm" target="_blank">●  Windows XP SP3  終止支援常見問答集</a><br>
+          <br></td>
+        <td width="50%" valign="top"><a href="http://windows.microsoft.com/zh-tw/windows/support#top-solutions=windows-8" target="_blank">●  Windows 解決方案</a><br>
+          <br>
+          <a href="http://windows.microsoft.com/zh-TW/windows-8/meet#t1=livetiles" target="_blank">●  探索Windows 8 </a></td>
       </tr>
       <tr id="button">
-        <td colspan="2" align="center" valign="top"><a href="#" target="_blank"><img src="/images/fail-bt1.png"/></a><a href="javascript:void(0);"><img class="fill-form-button" src="/images/fail-bt2.png"/></a></td>
+        <td colspan="2" align="center" valign="top"><a href="http://download.microsoft.com/download/A/0/D/A0D4CF2B-9B70-4846-A18D-0765D1F75343/MDT2012DeploymentWindows8.pdf" target="_blank"><img src="/images/fail-bt1.png"/></a><a href="javascript:void(0);"><img class="fill-form-button" src="/images/fail-bt2.png"/></a></td>
       </tr>
     </table>
   </div>
