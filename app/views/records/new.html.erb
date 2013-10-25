@@ -1,9 +1,6 @@
 
 
 <link rel="stylesheet" href="/css/game.css">
-<script src="/js/jquery-1.10.2.min.js"></script>
-<script src="/js/auto-full-height.min.js"></script>
-<script src="/js/jquery.easing.1.3.js"></script>
 
 
 <script src="http://documentcloud.github.com/underscore/underscore-min.js"></script>
@@ -29,6 +26,7 @@ function padLeft(str){
 	return pad.substring(0, pad.length - str.length) + str;
 }
 
+$.preload();
 
 $(document).ready(function(){
 
@@ -122,6 +120,7 @@ var Record = Backbone.Model.extend({
  		initialize: function( data ) {
 	 			 		
 	 		this.questions = new Questions(data.questions);
+			$.preload( '/images/game/' + data['image'] );
  		}
 	 	
  	});
@@ -129,6 +128,11 @@ var Record = Backbone.Model.extend({
  	var Groups = Backbone.Collection.extend({
  		model: Group,
 	 	initialize: function() {
+	 		
+	 		this.each(function( group ) {
+		 		$.preload('/images/game/' + group.image);
+	 		});
+	 	
 	 	}
  	});
  	
@@ -263,6 +267,9 @@ var Record = Backbone.Model.extend({
 		initialize: function(data) {
 			this.answers = new Answers(data['answers']);
 			this.answers.parent = this;
+			
+			$.preload( '/images/game/' + data['image'] );
+			
 		},
 		answers: {},
 		defaults: {
@@ -275,7 +282,7 @@ var Record = Backbone.Model.extend({
 		model: Question,
 		actors: {},
 		
-		initialize: function() {							
+		initialize: function() {						
 		}
 	});
 	
@@ -285,6 +292,9 @@ var Record = Backbone.Model.extend({
 		initialize: function() {
 			
 			$('#next a').click(function(){ questionView.next(); });
+			
+			
+			
 		},
 		next: function() {
 			
@@ -447,8 +457,9 @@ var Record = Backbone.Model.extend({
 	});
 	
 	var Actor = Backbone.Model.extend({
-		initalize: function() {
+		initialize: function(data) {
 			
+			$.preload( data['image'], data['hail'] );
 		},
 		defaults: {
 			name: 'undefined',
@@ -460,6 +471,10 @@ var Record = Backbone.Model.extend({
 		model: Actor,
 		initialize: function() {
 			
+	 		this.each(function( actor ) {
+	 			console.log('/images/game/' + actor.image)
+		 		$.preload('/images/game/' + answactorer.image);
+	 		});
 		}
 	});
 	
@@ -599,7 +614,7 @@ var actorsView;
 	    </div>
 	    <div class="send">
 	    <span>*以上個人資料為得獎聯絡方式，請務必正確填寫，以維護您的得獎權利。</span><br>
-	        <input name="" type="checkbox" value="" class="checkbox"/><strong>我已詳閱<a href="detail.htm" target="_blank">活動辦法及隱私權聲明</a></strong><br>
+	        <input id="agree-privacy" name="" type="checkbox" value="" class="checkbox"/><strong>我已詳閱<a href="detail.htm" target="_blank">活動辦法及隱私權聲明</a></strong><br>
 	        <input name="" type="button" class="send-button"/>
 	    </div>
 	  </div>
