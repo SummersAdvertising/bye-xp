@@ -2,7 +2,7 @@ class RecordsController < ApplicationController
   # GET /records
   # GET /records.json
   def index
-    @records = Record.order( 'score DESC, time ASC' ).all
+    @records = Record.order( 'score DESC, time ASC' ).page params[:page]
     
     if !params[ :email ].nil? && @myRecord = Record.where( :email => params[ :email ] ).first
    		   		

@@ -65,7 +65,7 @@ position:absolute;bottom:45px;left:34%;-webkit-transition:all ease .3s;-moz-tran
 .box #button a:hover{position:relative;top:-3px}
 
 #failbox{height:572px;background:url(../images/fail-bg.png) 0 0 no-repeat}
-#failbox table{top:50px}
+#failbox table{top:25px}
 #failbox #achivement td{height:220px}
 
 #sucsbox{height:592px;background:url(../images/sucs-bg.png) 0 0 no-repeat}

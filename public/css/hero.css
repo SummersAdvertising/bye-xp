@@ -1,6 +1,7 @@
 
-#intro{background:url(../images/hero-intro.png) 10% -15px no-repeat;height:300px;padding:150px 0 0 45%}
-#intro h2{width:312px;height:51px;text-indent:-7777px;background:url(../images/hero-h2.png) 0 0 no-repeat}
+#intro{background:url(../images/hero-intro.png) 10% -15px no-repeat;height:300px;padding:60px 0 0 45%}
+#intro h2{width:312px;height:56px;text-indent:-7777px;background:url(../images/hero-h2.png) 0 0 no-repeat}
+#intro a:hover{position:relative;top:-3px}
 
 #article{width:644px;margin:0 auto}
 #article div{width:644px;height:180px;background-position:0 0;background-repeat:no-repeat;margin:10px 0;

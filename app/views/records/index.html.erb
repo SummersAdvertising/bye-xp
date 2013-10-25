@@ -15,7 +15,9 @@
   <div id="intro">
     <h2>超級特務英雄榜</h2>
     <p>不是英雄不上榜，每一枚榮譽勳章，都代表您已挑戰自我，累積過人實力，<br>
-      恭喜各位超級特務晉升英雄等級！</p>
+      恭喜各位超級特務晉升英雄等級！<br>
+      還沒取得榮譽勳章的特務可別洩氣，趕快掌握關鍵訊息再次挑戰！<br><br>
+      <a href="/downloads?link=http%3A%2F%2Fdownload.microsoft.com%2Fdownload%2FA%2F0%2FD%2FA0D4CF2B-9B70-4846-A18D-0765D1F75343%2FMDT2012DeploymentWindows8.pdf" target="_blank"><img src="images/hero-bt.png" width="315" height="45" /></a></p>
   </div>
   
   
@@ -35,7 +37,7 @@
 <% end %>
     <hr></hr>
  
- <% i =1 %>
+ <% i = params[:page].nil? ? 1 : (params[:page].to_i() -1) * 10 %>
 <% @records.each do |record| %>
     <div class="<%= get_rank( record ) %>">
     	<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -49,6 +51,9 @@
     </div>
 <% i += 1 %>
 <% end %>
+
+<%= paginate @records, :outter_window => 3 %>
+ <!--div id="page"> <a href="#">&lt;</a><a href="#" class="active">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">&gt;</a> </div-->
 
 </div>
 <!--content-->

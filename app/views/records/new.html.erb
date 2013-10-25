@@ -212,7 +212,7 @@ var Record = Backbone.Model.extend({
 							case "email":
 								if ( input.value.length <= 0 ) {
 									errors += "請填寫您的電子信箱。\n";									
-								} else if ( !/^\w+@[a-zA-Z_\-]+?\.[a-zA-Z]{2,3}(\.[a-zA-Z]{2,3})?$/.test(input.value) ) {
+								} else if ( !/^[\w\-\_]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}(\.[a-zA-Z]{2,3})?$/.test(input.value) ) {
 									errors += "請檢查您的email格式。\n";
 								}
 							break;
@@ -660,7 +660,7 @@ var actorsView;
           <a href="http://windows.microsoft.com/zh-TW/windows-8/meet#t1=livetiles" target="_blank">●  探索Windows 8 </a></td>
       </tr>
       <tr id="button">
-        <td colspan="2" align="center" valign="top"><a href="http://download.microsoft.com/download/A/0/D/A0D4CF2B-9B70-4846-A18D-0765D1F75343/MDT2012DeploymentWindows8.pdf" target="_blank"><img src="/images/fail-bt1.png"/></a><a href="javascript:void(0);"><img class="fill-form-button" src="/images/fail-bt2.png"/></a></td>
+        <td colspan="2" align="center" valign="top"><a href="/downloads?link=http%3A%2F%2Fdownload.microsoft.com%2Fdownload%2FA%2F0%2FD%2FA0D4CF2B-9B70-4846-A18D-0765D1F75343%2FMDT2012DeploymentWindows8.pdf" target="_blank"><img src="/images/fail-bt1.png"/></a><a href="javascript:void(0);"><img class="fill-form-button" src="/images/fail-bt2.png"/></a></td>
       </tr>
     </table>
   </div>
