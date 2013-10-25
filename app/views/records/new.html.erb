@@ -249,8 +249,14 @@ var Record = Backbone.Model.extend({
 	 	render: function() {
 	 	
 	 		var group = groups.at(this.current);
-	 	
-	 		questions = new Questions( group.questions.shuffle() );
+	 		
+	 		var groupSet = group.questions.shuffle();
+	 		
+	 		while(groupSet[0].get('image') == 'gp3-h4-3.png') {
+		 		groupSet = group.questions.shuffle();
+	 		}	 		
+	 		
+	 		questions = new Questions( groupSet );
 	 		
 			questionView.render();
 			
