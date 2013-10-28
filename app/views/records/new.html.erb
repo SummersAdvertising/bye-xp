@@ -475,7 +475,11 @@ var Record = Backbone.Model.extend({
 						
 						height = getMaxHeight(rightElement) + 60;
 						
-						rightElement.append('<div style=" height:' + height + 'px; " class="right answer"></div>');
+						var rightAnswer = $('<div class="right answer"></div>');
+						
+						rightAnswer.height(height);
+						
+						rightElement.append(rightAnswer);
 						
 						actorsView.dead( self.answers.parent.get( 'actor' ).name );
 					}
