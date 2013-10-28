@@ -9,7 +9,7 @@
 <script src="/js/data.js"></script>
 
 <script id="answer-template" type="text/x-jquery-tmpl">
-    <td width="50%" class="answer" data-id="${id}" valign="middle" id="select-${num}">${content} </td>
+    <td width="50%" class="answer" data-id="${id}" valign="middle" id="select-${num}"><div class="answer-content" style="position: relative;">${content}</div></td>
 </script>
 
 
@@ -459,7 +459,7 @@ var Record = Backbone.Model.extend({
 						var height = maxHeight + 60;
 					
 						actorsView.survive( self.answers.parent.get( 'actor' ).name );
-						$(this).append('<div style=" height:' + height + 'px; " class="right answer"></div>');
+						$(this).children('.answer-content').append('<div style=" height:' + height + 'px; " class="right answer"></div>');
 						
 						record.gained();
 						
@@ -477,7 +477,7 @@ var Record = Backbone.Model.extend({
 						
 						var rightAnswer = $('<div class="right answer"></div>');
 												
-						rightElement.append(rightAnswer);
+						rightElement.children('.answer-content').append(rightAnswer);
 						
 						rightAnswer.height(height);
 						
