@@ -444,17 +444,21 @@ var Record = Backbone.Model.extend({
 				
 					record.answered( answer.get('content') );
 					
+					var heights = $(".answer").map(function () { return $(this).height(); }); 
+					
+					maxHeight = Math.max.apply(null, heights);
+					
 					if ( answer.get('currect') == true ) {
 					
 						actorsView.survive( self.answers.parent.get( 'actor' ).name );
-						$(this).append('<div class="right answer"></div>');
+						$(this).append('<div height="' + maxHeight + '" class="right answer"></div>');
 						
 						record.gained();
 						
 					} else {
 						var currectAnswer = self.answers.where({currect: true})[0];
 						
-						$(this).append('<div class="wrong answer"></div>');
+						$(this).append('<div height="' + maxHeight + '" class="wrong answer"></div>');
 						self.$el.find('[data-id=' + currectAnswer.cid + ']').append('<div class="right answer"></div>');
 						
 						actorsView.dead( self.answers.parent.get( 'actor' ).name );
