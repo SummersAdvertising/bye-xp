@@ -468,7 +468,7 @@ var Record = Backbone.Model.extend({
 												
 						var height = getMaxHeight($(this)) + 60;
 						
-						$(this).append('<div style=" height:' + height + 'px; " class="wrong answer"></div>');
+						$(this).children('.answer-content').append('<div style=" height:' + height + 'px; " class="wrong answer"></div>');
 						
 						
 						var rightElement = self.$el.find('[data-id=' + currectAnswer.cid + ']');
