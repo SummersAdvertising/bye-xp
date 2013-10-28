@@ -430,7 +430,8 @@ var Record = Backbone.Model.extend({
 				
 				if ( i == 3 ) {
 					
-					this.$el.append(row1).append(row2);
+					this.$el.append(row1);
+					this.$el.append(row2);
 				
 				}
 				
@@ -439,7 +440,7 @@ var Record = Backbone.Model.extend({
 					
 					var answer = self.answers.getByCid($(this).data('id'));
 					
-					$(this).parent().children().unbind('click');
+					$('.answer').unbind('click');
 				
 					record.answered( answer.get('content') );
 					
@@ -453,8 +454,8 @@ var Record = Backbone.Model.extend({
 					} else {
 						var currectAnswer = self.answers.where({currect: true})[0];
 						
-						self.$el.find('[data-id=' + currectAnswer.cid + ']').append('<div class="right answer"></div>');
 						$(this).append('<div class="wrong answer"></div>');
+						self.$el.find('[data-id=' + currectAnswer.cid + ']').append('<div class="right answer"></div>');
 						
 						actorsView.dead( self.answers.parent.get( 'actor' ).name );
 					}
