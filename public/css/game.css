@@ -13,17 +13,16 @@
 #question p{color:#0637A5;padding:0 0 0 83px;font-weight:900}
 
 #select{margin:30px 0 30px 82px;width:570px;overflow:hidden}
-#select li{width:285px;float:left;background-position:20px center;background-repeat:no-repeat;height:90px;
--webkit-transition:all ease .3s;-moz-transition:all ease .3s}
-#select li a{display:inline-block;width:100%;height:100%;font:900 22px 微軟正黑體,Microsoft JhengHei;
-padding:15px 30px 0 70px;cursor:pointer}
-#select li:hover{background-color:#6BD9EA}
-#select li .wrong{background:url(../images/wrong.png) center center no-repeat}
-#select li .right{background:url(../images/right.png) center center no-repeat}
-#select-a{background-image:url(../images/select-a.png);border-bottom:1px solid #75FFFF;border-right:1px solid #75FFFF}
-#select-b{background-image:url(../images/select-b.png);border-bottom:1px solid #75FFFF;border-left:1px solid #2E656E}
-#select-c{background-image:url(../images/select-c.png);border-top:1px solid #2E656E;border-right:1px solid #75FFFF}
-#select-d{background-image:url(../images/select-d.png);border-top:1px solid #2E656E;border-left:1px solid #2E656E}
+#select td{background-position:20px center;background-repeat:no-repeat;padding:30px 15px 30px 70px;
+-webkit-transition:all ease .3s;-moz-transition:all ease .3s;position:relative; cursor: pointer;}
+#select td:hover{background-color:#6BD9EA}
+#select td .answer{width:100%;height:100%;position:absolute;top:0;left:0}
+#select td .right{background:url(../images/right.png) center center no-repeat}
+#select td .wrong{background:url(../images/wrong.png) center center no-repeat}
+#select-a{background-image:url(../images/select-a.png);border-bottom:1px solid #2E656E;border-right:1px solid #2E656E}
+#select-b{background-image:url(../images/select-b.png);border-bottom:1px solid #2E656E}
+#select-c{background-image:url(../images/select-c.png);border-right:1px solid #2E656E}
+#select-d{background-image:url(../images/select-d.png);}
 
 #next { height: 46px; }
 

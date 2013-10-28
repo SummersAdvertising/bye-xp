@@ -9,7 +9,7 @@
 <script src="/js/data.js"></script>
 
 <script id="answer-template" type="text/x-jquery-tmpl">
-	<li class="answer" id="select-${num}" data-id="${id}"><a style="font-size: ${fontSize}px">${content}</a></li>
+    <td class="answer" data-id="${id}" valign="middle" id="select-${num}">${content} </td>
 </script>
 
 
@@ -406,30 +406,34 @@ var Record = Backbone.Model.extend({
 			
 			this.$el.children().remove();
 			
+			var row1 = $('<tr></tr>');
+			var row2 = $('<tr></tr>');
+			
 			for( var i in answers.models) {
 				var answer = answers.models[ sequence[i] ];
 				
 				var fillin = answer.toJSON();
 				fillin.num = this.num[i];
 				fillin.id = answer.cid;
+					
 								
-				var length = fillin.content.length;
-				switch( true ) {
-					case length > 48:
-						fillin.fontSize = 12;
-					break;
-					case length > 27:
-						fillin.fontSize = 14;
-					break;
-					default:
-						fillin.fontSize = 19;					
-					break;
-				}
 				
 				var answerBlock = this.template.tmpl(fillin); 
 				answer.view = answerBlock;
 				
-				this.$el.append(answerBlock);
+					
+				if ( i < 2 ) {
+					answerBlock.appendTo(row1);
+				} else {
+					answerBlock.appendTo(row2);
+				}
+				
+				if ( i == 3 ) {
+					
+					this.$el.append(row1).append(row2);
+				
+				}
+				
 				
 				answerBlock.click(function() {
 					
@@ -442,15 +446,15 @@ var Record = Backbone.Model.extend({
 					if ( answer.get('currect') == true ) {
 					
 						actorsView.survive( self.answers.parent.get( 'actor' ).name );
-						$(this).children('a').addClass("right");
+						$(this).append('<div class="right answer"></div>');
 						
 						record.gained();
 						
 					} else {
 						var currectAnswer = self.answers.where({currect: true})[0];
 						
-						self.$el.find('[data-id=' + currectAnswer.cid + ']').children('a').addClass("right");
-						$(this).children('a').addClass("wrong");
+						self.$el.find('[data-id=' + currectAnswer.cid + ']').append('<div class="right answer"></div>');
+						$(this).append('<div class="wrong answer"></div>');
 						
 						actorsView.dead( self.answers.parent.get( 'actor' ).name );
 					}
@@ -706,12 +710,23 @@ var actorsView;
 		D.   決定部署方式，調整自動化部署程度<br>
 		E.    使用網路、USB隨 身碟、光碟媒體部署
       </p>
-      <ul id="select">
-        <li id="select-a"><a class="wrong">市面上不再販售 Windows XP</a></li>
-        <li id="select-b"><a class="wrong">無法再透過微軟得到相關技術支援</a></li>
-        <li id="select-c"><a class="wrong">不再釋出任何系統更新</a></li>
-        <li id="select-d"><a class="right">以上皆是</a></li>
-      </ul>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" id="select">
+        <tr>
+          <td width="50%" valign="middle" id="select-a">
+            市面上不再販售 Windows XP
+            </td>
+          <td width="50%" valign="middle" id="select-b">
+            無法再透過微軟得到相關技術支援
+            </td>
+        </tr>
+        <tr>
+          <td valign="middle" id="select-c">
+            不再釋出任何系統更新
+            </td>
+          <td valign="middle" id="select-d">
+            以上皆是</td>
+        </tr>
+      </table>
       <div id="next"><a href="#"></a></div>
     </div>
     <!--question-->
