@@ -9,9 +9,8 @@
 <script src="/js/data.js"></script>
 
 <script id="answer-template" type="text/x-jquery-tmpl">
-    <td width="50%" class="answer" data-id="${id}" valign="middle" id="select-${num}"><div class="answer-content" style="position: relative;">${content}</div></td>
+    <td width="50%" data-id="${id}"><div class="answer-box" id="select-${num}">${content}</div></td>
 </script>
-
 
 <script id="actor-template" type="text/x-jquery-tmpl">
       <div class="people people-${count}" id="${name}"><img src="${image}"/></div>
@@ -398,6 +397,12 @@ var Record = Backbone.Model.extend({
 			var self = this;
 			this.answers = answers;
 			
+			 function getMaxHeight(obj) {
+				var heights = $(obj).parent().children().map(function () { return $(this).height(); });                                         
+				maxHeight = Math.max.apply(null, heights);
+				return maxHeight;     
+			}
+			
 			var sequence = [];			
 			for(var j =0; j < answers.models.length; j++) {
 				sequence.push(j);
@@ -433,8 +438,10 @@ var Record = Backbone.Model.extend({
 					this.$el.append(row1);
 					this.$el.append(row2);
 				
+					$('.answer-box').each(function() {
+						$(this).outerHeight(getMaxHeight($(this).parent()));
+					});
 				}
-				
 				
 				answerBlock.click(function() {
 					
@@ -443,41 +450,31 @@ var Record = Backbone.Model.extend({
 					$('.answer').unbind('click');
 				
 					record.answered( answer.get('content') );
-					
-					function getMaxHeight( obj ) {
-						var heights = $(obj).parent().children(".answer").map(function () { return $(this).height(); }); 					
-						maxHeight = Math.max.apply(null, heights);
-						
-						return maxHeight;
-					}
-					
+										
 					if ( answer.get('currect') == true ) {
 					
-						var heights = $(this).parent().children(".answer").map(function () { return $(this).height(); }); 					
-						maxHeight = Math.max.apply(null, heights);
-						
-						var height = maxHeight + 60;
+						var height =  getMaxHeight($(this).parent());
 					
 						actorsView.survive( self.answers.parent.get( 'actor' ).name );
-						$(this).children('.answer-content').append('<div style=" height:' + height + 'px; " class="right answer"></div>');
+						$(this).children('.answer-box').append('<div style=" height:' + height + 'px; " class="right answer"></div>');
 						
 						record.gained();
 						
 					} else {
 						var currectAnswer = self.answers.where({currect: true})[0];
 												
-						var height = getMaxHeight($(this)) + 60;
+						var height = getMaxHeight($(this).parent());
 						
-						$(this).children('.answer-content').append('<div style=" height:' + height + 'px; " class="wrong answer"></div>');
+						$(this).children('.answer-box').append('<div style=" height:' + height + 'px; " class="wrong answer"></div>');
 						
 						
-						var rightElement = self.$el.find('[data-id=' + currectAnswer.cid + ']');
+						var rightElement = self.$el.find('[data-id=' + currectAnswer.cid + ']').parent();
 						
-						height = getMaxHeight(rightElement) + 60;
+						height = getMaxHeight(rightElement);
 						
 						var rightAnswer = $('<div class="right answer"></div>');
 												
-						rightElement.children('.answer-content').append(rightAnswer);
+						rightElement.children('.answer-box').append(rightAnswer);
 						
 						rightAnswer.height(height);
 						

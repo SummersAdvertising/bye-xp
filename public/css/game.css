@@ -1,8 +1,8 @@
 
-#aside{float:left;width:442px}
-#aside h2{width:442px;height:329px;background:url(../images/h2.png) 0 0 no-repeat;text-indent:-9999px}
+#aside{float:left;width:442px;margin-top:-40px}
+#aside h2{width:442px;height:309px;background:url(../images/h2.png) center bottom no-repeat;text-indent:-9999px}
 #aside #text{padding:0 0 0 100px}
-#aside p{margin:15px 0 60px 0;font-size:17px;color:#3a0808}
+#aside p{margin:15px 0 20px 0;font-size:17px;color:#3a0808}
 #aside td{font:900 21px 'Arial black',微軟正黑體,Microsoft JhengHei;color:#d64b5e}
 #aside td strong{font-size:120px;text-shadow:1px 1px 0 #38A4C0}
 #aside td span{font-size:60px;text-shadow:1px 1px 0 #38A4C0}
@@ -13,16 +13,19 @@
 #question p{color:#0637A5;padding:0 0 0 83px;font-weight:900}
 
 #select{margin:30px 0 30px 82px;width:570px;overflow:hidden}
-#select td{background-position:20px center;background-repeat:no-repeat;padding:30px 15px 30px 70px;
--webkit-transition:all ease .3s;-moz-transition:all ease .3s;position:relative; cursor: pointer;}
-#select td:hover{background-color:#6BD9EA}
-#select td .answer{width:100%;height:100%;position:absolute;top:0;left:0}
-#select td .right{background:url(../images/right.png) center center no-repeat}
-#select td .wrong{background:url(../images/wrong.png) center center no-repeat}
-#select-a{background-image:url(../images/select-a.png);border-bottom:1px solid #2E656E;border-right:1px solid #2E656E}
-#select-b{background-image:url(../images/select-b.png);border-bottom:1px solid #2E656E}
-#select-c{background-image:url(../images/select-c.png);border-right:1px solid #2E656E}
-#select-d{background-image:url(../images/select-d.png);}
+#select .answer-box{width:100%;height:100%; min-height: 95px; position:relative;padding:20px 10px 20px 60px; cursor: pointer;
+background-position:10px 10px;background-repeat:no-repeat}
+#select .answer{width:100%;height:100%;position:absolute;top:0;left:0}
+#select .right{background:url(../images/right.png) center center no-repeat}
+#select .wrong{background:url(../images/wrong.png) center center no-repeat}
+#select-a{background-image:url(../images/select-a.png);border-bottom:1px solid #74FFFF;border-right:1px solid #2E656E}
+#select-b{background-image:url(../images/select-b.png);border-bottom:1px solid #74FFFF;border-left:1px solid #74FFFF}
+#select-c{background-image:url(../images/select-c.png);border-top:1px solid #2E656E;border-right:1px solid #2E656E}
+#select-d{background-image:url(../images/select-d.png);border-top:1px solid #2E656E;border-left:1px solid #74FFFF}
+
+
+#select div:hover{ background-color:#6BD9EA }
+#select .answer-box div:hover { background-color: transparent; } 
 
 #next { height: 46px; }
 
