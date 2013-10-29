@@ -9,7 +9,7 @@
 <script src="/js/data.js"></script>
 
 <script id="answer-template" type="text/x-jquery-tmpl">
-    <td width="50%" data-id="${id}"><div class="answer-box" id="select-${num}">${content}</div></td>
+    <td class="answer-block" width="50%" data-id="${id}"><div class="answer-box" id="select-${num}">${content}</div></td>
 </script>
 
 <script id="actor-template" type="text/x-jquery-tmpl">
@@ -447,7 +447,7 @@ var Record = Backbone.Model.extend({
 					
 					var answer = self.answers.getByCid($(this).data('id'));
 					
-					$('.answer').unbind('click');
+					$('.answer-block').unbind('click');
 				
 					record.answered( answer.get('content') );
 										
