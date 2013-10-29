@@ -421,11 +421,8 @@ var Record = Backbone.Model.extend({
 				fillin.num = this.num[i];
 				fillin.id = answer.cid;
 					
-								
-				
 				var answerBlock = this.template.tmpl(fillin); 
 				answer.view = answerBlock;
-				
 					
 				if ( i < 2 ) {
 					answerBlock.appendTo(row1);
@@ -468,9 +465,9 @@ var Record = Backbone.Model.extend({
 						$(this).children('.answer-box').append('<div style=" height:' + height + 'px; " class="wrong answer"></div>');
 						
 						
-						var rightElement = self.$el.find('[data-id=' + currectAnswer.cid + ']').parent();
+						var rightElement = self.$el.find('[data-id=' + currectAnswer.cid + ']');
 						
-						height = getMaxHeight(rightElement);
+						height = getMaxHeight(rightElement.parent());
 						
 						var rightAnswer = $('<div class="right answer"></div>');
 												
