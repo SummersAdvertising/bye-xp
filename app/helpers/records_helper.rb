@@ -3,7 +3,7 @@ module RecordsHelper
 	
 		if record.score > 13
 			mClass = 'best'	
-		elsif record.score > 10 
+		elsif record.score > 11
 			mClass = 'good'
 		else
 			mClass = 'bad'
