@@ -479,6 +479,7 @@ var Record = Backbone.Model.extend({
 					}
 					
 					$('#score').html( record.get('score') );
+					console.log( record.get('score'));
 					$('#next a').fadeIn('slow');
 					
 					//setTimeout(function() { questionView.next(); }, 2000);
@@ -531,7 +532,7 @@ var Record = Backbone.Model.extend({
 		},
 		render: function(groupActors) {
 			
-			this.$el.children().remove();
+			this.$el.children(':not("#next")').remove();
 			
 			var base = groupActors.models.length > 3 ? 3 : 0;
 			
@@ -717,9 +718,9 @@ var actorsView;
 		D.   決定部署方式，調整自動化部署程度<br>
 		E.    使用網路、USB隨 身碟、光碟媒體部署
       </p>
-      <div id="select">
-      	<div id="next"><a href="#"></a></div>
-      	<table width="100%" border="0" cellspacing="0" cellpadding="0" id="select">
+      <div id="select-container">
+      	<div id="next"><a href="#">&nbsp;</a></div>
+      	<table width="100%" border="0" cellspacing="0" cellpadding="0"  id="select">
         	<tr>
           	<td width="50%" valign="middle" id="select-a">
             	市面上不再販售 Windows XP
@@ -738,7 +739,7 @@ var actorsView;
   	    </table>
       </div>
       <!--select-->
-      <div id="info">計時：<span id="timer">00:00:00</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成功救援：<span id="score">15</span>人</div>
+      <div id="info">計時：<span id="timer">00:00:00</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成功救援：<span id="score">0</span>人</div>
       <!--info-->       
     </div>
     <!--question-->
