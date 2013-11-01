@@ -1,5 +1,11 @@
 class DownloadsController < ApplicationController
 
+	def count
+	
+		@count = Download.all.count
+	
+	end
+
 	def new
 	
 		@download = Download.new

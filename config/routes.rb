@@ -1,6 +1,7 @@
 Breakup::Application.routes.draw do
   resources :records
   
+  match 'downloads/count'	=> 'downloads#count'
   match 'downloads'		=> 'downloads#new'
 
   # The priority is based upon order of creation:
