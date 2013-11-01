@@ -13,7 +13,7 @@ set :rails_env, "production"
 set :scm, :git
 set :branch, "master"
 set :scm_verbose, true
-set :use_sudo, false
+set :use_sudo, true
 set :user, "deploy"
 set :password, "1qaz2wsx"
 set :group, "webs"
