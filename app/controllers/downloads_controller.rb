@@ -3,6 +3,7 @@ class DownloadsController < ApplicationController
 	def count
 	
 		@count = Download.all.count
+		@play_count = Record.group('phone,name,address').all.count
 	
 	end
 
