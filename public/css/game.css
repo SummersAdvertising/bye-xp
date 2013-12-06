@@ -81,7 +81,7 @@ position:absolute;bottom:45px;left:34%;-webkit-transition:all ease .3s;-moz-tran
 /* Form */
 #intro{background:url(/images/hero-intro.png) 10% -15px no-repeat;height:300px;padding:215px 0 0 39%;font-size:18px}
 
-#form-container #article{background:url(/images/premiums.png) 95% bottom no-repeat; float: inherit; width: auto;}
+#form-container #article{float: inherit; width: auto;}
 #form-container #article > div{width:505px;margin:0 auto 10px auto;}
 #form-container #article .row{background:#fff;border-radius:5px;box-shadow:inset 0 5px 10px #ddd;padding:5px;border:1px solid #D3F3F7}
 #form-container #article .sex{padding:5px}
