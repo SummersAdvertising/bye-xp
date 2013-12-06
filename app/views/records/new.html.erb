@@ -106,8 +106,8 @@ var Record = Backbone.Model.extend({
 		var self = this;
 		
 		this.save({}, {
-			success: function() {
-				window.location = '/records?email=' + self.get('email')
+			success: function(data) {
+				window.location = '/records?id=' + data.id
 			}			
 		});		
 	}
